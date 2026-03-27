@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import Login from "./components/Login";
+// import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+function App()  
+ {
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <div>
-      {isLoggedIn ? (
+      {/* {isLoggedIn ? ( */}
         <Dashboard />
-      ) : (
+      {/* ) : (
         <Login onLogin={() => setIsLoggedIn(true)} />
-      )}
+      )} */}
     </div>
   );
 }

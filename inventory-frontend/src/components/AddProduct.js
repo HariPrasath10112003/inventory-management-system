@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { addProduct, updateProduct } from "../api";
 
 function AddProduct({ editingProduct, setEditingProduct, refresh }) {
   const [product, setProduct] = useState({
@@ -22,24 +22,20 @@ function AddProduct({ editingProduct, setEditingProduct, refresh }) {
   const handleSubmit = async () => {
     try {
       if (editingProduct) {
-        // UPDATE
-        await axios.put(
-          `http://localhost:8080/products/${editingProduct.id}`,
-          product
-        );
+        await updateProduct(editingProduct.id, product);
         alert("Product Updated");
         setEditingProduct(null);
       } else {
-        // ADD
-        await axios.post("http://localhost:8080/products", product);
+        await addProduct(product);
         alert("Product Added");
       }
 
       setProduct({ name: "", price: "", quantity: "", category: "" });
-      refresh(); // reload list
+      refresh();
     } catch (error) {
-      alert("Error");
-    }
+  console.error(error);
+  alert(error.response?.data || "Error");
+}
   };
 
   return (

@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import AddProduct from "./AddProduct";
 import ProductList from "./ProductList";
-import axios from "axios";
+import { getProducts } from "../api";
 
 function Dashboard() {
   const [editingProduct, setEditingProduct] = useState(null);
   const [products, setProducts] = useState([]);
 
   const fetchProducts = async () => {
-    const res = await axios.get("http://localhost:8080/products");
-    setProducts(res.data);
+    try {
+      const res = await getProducts();
+      setProducts(res.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -18,10 +22,7 @@ function Dashboard() {
 
   const totalProducts = products.length;
 
-  const totalStock = products.reduce(
-    (sum, p) => sum + p.quantity,
-    0
-  );
+  const totalStock = products.reduce((sum, p) => sum + p.quantity, 0);
 
   const lowStock = products.filter((p) => p.quantity > 0 && p.quantity < 5).length;
 
@@ -31,7 +32,6 @@ function Dashboard() {
     <div style={{ padding: "20px" }}>
       <h1 style={{ textAlign: "center" }}>Inventory Dashboard</h1>
 
-      {/* Stats */}
       <div style={{ display: "flex", justifyContent: "space-around", marginBottom: "20px" }}>
         <div style={cardStyle}> Total Products: {totalProducts}</div>
         <div style={cardStyle}> Total Stock: {totalStock}</div>

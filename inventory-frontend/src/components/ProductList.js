@@ -1,29 +1,34 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { getProducts, deleteProduct, sellProduct } from "../api";
 
-function ProductList({ setEditingProduct }) {
+function ProductList({ setEditingProduct, refresh }) {
   const [products, setProducts] = useState([]);
 
   const fetchProducts = async () => {
-    const res = await axios.get("http://localhost:8080/products");
-    setProducts(res.data);
+    try {
+      const res = await getProducts();
+      setProducts(res.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  const deleteProduct = async (id) => {
-    await axios.delete(`http://localhost:8080/products/${id}`);
+  const handleDelete = async (id) => {
+    await deleteProduct(id);
     fetchProducts();
+    refresh();
   };
 
-  const sellProduct = async (id) => {
+  const handleSell = async (id) => {
     const quantity = prompt("Enter quantity to sell:");
-    await axios.post(
-      `http://localhost:8080/products/sell/${id}?quantity=${quantity}`
-    );
+    if (!quantity) return;
+    await sellProduct(id, quantity);
     fetchProducts();
+    refresh();
   };
 
   const editProduct = (product) => {
@@ -55,26 +60,9 @@ function ProductList({ setEditingProduct }) {
               <td>{p.quantity}</td>
               <td>{p.category}</td>
               <td>
-                <button
-                  style={{ backgroundColor: "red", color: "white" }}
-                  onClick={() => deleteProduct(p.id)}
-                >
-                  Delete
-                </button>
-
-                <button
-                  style={{ backgroundColor: "orange", color: "white" }}
-                  onClick={() => sellProduct(p.id)}
-                >
-                  Sell
-                </button>
-
-                <button
-                  style={{ backgroundColor: "blue", color: "white" }}
-                  onClick={() => editProduct(p)}
-                >
-                  Edit
-                </button>
+                <button onClick={() => handleDelete(p.id)}>Delete</button>
+                <button onClick={() => handleSell(p.id)}>Sell</button>
+                <button onClick={() => editProduct(p)}>Edit</button>
               </td>
             </tr>
           ))}
