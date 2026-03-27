@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://13.61.16.189:8080", // 👈 EC2 IP
+  baseURL: "http://13.61.16.189:8080",
 });
 
 export const getProducts = () => API.get("/products");
