@@ -5,12 +5,8 @@ function ProductList({ setEditingProduct, refresh }) {
   const [products, setProducts] = useState([]);
 
   const fetchProducts = async () => {
-    try {
-      const res = await getProducts();
-      setProducts(res.data);
-    } catch (error) {
-      console.error(error);
-    }
+    const res = await getProducts();
+    setProducts(res.data);
   };
 
   useEffect(() => {
@@ -25,7 +21,6 @@ function ProductList({ setEditingProduct, refresh }) {
 
   const handleSell = async (id) => {
     const quantity = prompt("Enter quantity to sell:");
-    if (!quantity) return;
     await sellProduct(id, quantity);
     fetchProducts();
     refresh();
@@ -60,9 +55,26 @@ function ProductList({ setEditingProduct, refresh }) {
               <td>{p.quantity}</td>
               <td>{p.category}</td>
               <td>
-                <button onClick={() => handleDelete(p.id)}>Delete</button>
-                <button onClick={() => handleSell(p.id)}>Sell</button>
-                <button onClick={() => editProduct(p)}>Edit</button>
+                <button
+                  style={{ backgroundColor: "red", color: "white" }}
+                  onClick={() => handleDelete(p.id)}
+                >
+                  Delete
+                </button>
+
+                <button
+                  style={{ backgroundColor: "orange", color: "white" }}
+                  onClick={() => handleSell(p.id)}
+                >
+                  Sell
+                </button>
+
+                <button
+                  style={{ backgroundColor: "blue", color: "white" }}
+                  onClick={() => editProduct(p)}
+                >
+                  Edit
+                </button>
               </td>
             </tr>
           ))}

@@ -8,12 +8,8 @@ function Dashboard() {
   const [products, setProducts] = useState([]);
 
   const fetchProducts = async () => {
-    try {
-      const res = await getProducts();
-      setProducts(res.data);
-    } catch (error) {
-      console.error(error);
-    }
+    const res = await getProducts();
+    setProducts(res.data);
   };
 
   useEffect(() => {
@@ -22,21 +18,28 @@ function Dashboard() {
 
   const totalProducts = products.length;
 
-  const totalStock = products.reduce((sum, p) => sum + p.quantity, 0);
+  const totalStock = products.reduce(
+    (sum, p) => sum + p.quantity,
+    0
+  );
 
-  const lowStock = products.filter((p) => p.quantity > 0 && p.quantity < 5).length;
+  const lowStock = products.filter(
+    (p) => p.quantity > 0 && p.quantity < 5
+  ).length;
 
-  const outOfStock = products.filter((p) => p.quantity === 0).length;
+  const outOfStock = products.filter(
+    (p) => p.quantity === 0
+  ).length;
 
   return (
     <div style={{ padding: "20px" }}>
       <h1 style={{ textAlign: "center" }}>Inventory Dashboard</h1>
 
       <div style={{ display: "flex", justifyContent: "space-around", marginBottom: "20px" }}>
-        <div style={cardStyle}> Total Products: {totalProducts}</div>
-        <div style={cardStyle}> Total Stock: {totalStock}</div>
-        <div style={cardStyle}> Low Stock: {lowStock}</div>
-        <div style={cardStyle}> Out of Stock: {outOfStock}</div>
+        <div style={cardStyle}>Total Products: {totalProducts}</div>
+        <div style={cardStyle}>Total Stock: {totalStock}</div>
+        <div style={cardStyle}>Low Stock: {lowStock}</div>
+        <div style={cardStyle}>Out of Stock: {outOfStock}</div>
       </div>
 
       <AddProduct
@@ -45,7 +48,10 @@ function Dashboard() {
         refresh={fetchProducts}
       />
 
-      <ProductList setEditingProduct={setEditingProduct} refresh={fetchProducts} />
+      <ProductList
+        setEditingProduct={setEditingProduct}
+        refresh={fetchProducts}
+      />
     </div>
   );
 }

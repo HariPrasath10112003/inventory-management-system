@@ -33,9 +33,8 @@ function AddProduct({ editingProduct, setEditingProduct, refresh }) {
       setProduct({ name: "", price: "", quantity: "", category: "" });
       refresh();
     } catch (error) {
-  console.error(error);
-  alert(error.response?.data || "Error");
-}
+      alert("Error");
+    }
   };
 
   return (
